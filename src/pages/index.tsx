@@ -7,7 +7,7 @@ import Stripe from "stripe";
 
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
-
+import Head from "next/head";
 
 interface HomeProps {
   products: {
@@ -27,32 +27,39 @@ export default function Home({ products }: HomeProps) {
   });
 
   return (
-    <main
-      ref={sliderRef}
-      className="keen-slider flex w-full max-w-[calc(100vw-(100vw-1180px)/2)] ml-auto min-h-[656px]"
-    >
-      {products.map((product) => (
-        <Link
-          href={`/product/${product.id}`}
-          key={product.id}
-          className="keen-slider__slide flex flex-col items-center justify-center bg-[linear-gradient(180deg,#1ea483_0%,#7465d4_100%)] rounded-[8px] cursor-pointer relative overflow-hidden group"
-        >
-          <Image
-            src={product.imageUrl}
-            alt=""
-            width={520}
-            height={480}
-            className="object-cover"
-          />
-          <footer className="absolute bottom-1 right-1 left-1 p-8 rounded-[6px] flex items-center justify-between bg-[rgba(0,0,0,0.6)] translate-y-[110%] opacity-0 transition-all duration-200 ease-in-out group-hover:translate-y-[0%] group-hover:opacity-100">
-            <strong className="text-lg text-[#E1E1E6]">{product.name}</strong>
-            <span className="text-xl font-bold text-[#00B37E]">
-              {product.price}
-            </span>
-          </footer>
-        </Link>
-      ))}
-    </main>
+    <>
+      <Head>
+        <title>Home | Ignite Shop</title>
+      </Head>
+
+      <main
+        ref={sliderRef}
+        className="keen-slider flex w-full max-w-[calc(100vw-(100vw-1180px)/2)] ml-auto min-h-[656px]"
+      >
+        {products.map((product) => (
+          <Link
+            href={`/product/${product.id}`}
+            key={product.id}
+            className="keen-slider__slide flex flex-col items-center justify-center bg-[linear-gradient(180deg,#1ea483_0%,#7465d4_100%)] rounded-[8px] cursor-pointer relative overflow-hidden group"
+            prefetch={false} // evita que o link faça prefetch na renderização e mantem o prefetch no hover
+          >
+            <Image
+              src={product.imageUrl}
+              alt=""
+              width={520}
+              height={480}
+              className="object-cover"
+            />
+            <footer className="absolute bottom-1 right-1 left-1 p-8 rounded-[6px] flex items-center justify-between bg-[rgba(0,0,0,0.6)] translate-y-[110%] opacity-0 transition-all duration-200 ease-in-out group-hover:translate-y-[0%] group-hover:opacity-100">
+              <strong className="text-lg text-[#E1E1E6]">{product.name}</strong>
+              <span className="text-xl font-bold text-[#00B37E]">
+                {product.price}
+              </span>
+            </footer>
+          </Link>
+        ))}
+      </main>
+    </>
   );
 }
 
